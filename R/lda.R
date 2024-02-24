@@ -241,8 +241,9 @@ word_dims <- function(tokens, n = 10, n_iter = 200) {
   names(d) <- seq_len(ncol(d))
   row.names(d) <- NULL
   attr(d, "dict") <- lda_model
-  phi <- lda_model$get_top_words(n = 100, lambda = 1)
-  readr::write_rds(phi, "teszt2.Rds")
+  phi <<- data.frame()
+  phi <<- lda_model$get_top_words(n = 100, lambda = 1)
+  readr::write_rds(phi, "phi.Rds")
   d
 }
 
@@ -261,8 +262,9 @@ word_dims_newtext <- function(lda_model, tokens, n_iter = 200) {
   d <- as.data.frame(d, stringsAsFactors = FALSE)
   names(d) <- seq_len(ncol(d))
   row.names(d) <- NULL
-  phi <- lda_model$get_top_words(n = 100, lambda = 1)
-  readr::write_rds(phi, "teszt2.Rds")
+  phi <<- data.frame()
+  phi <<- lda_model$get_top_words(n = 100, lambda = 1)
+  readr::write_rds(phi, "phi.Rds")
   d
 }
 
