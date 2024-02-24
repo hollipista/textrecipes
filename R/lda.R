@@ -241,8 +241,7 @@ word_dims <- function(tokens, n = 10, n_iter = 200) {
   names(d) <- seq_len(ncol(d))
   row.names(d) <- NULL
   attr(d, "dict") <- lda_model
-  phi <<- data.frame()
-  phi <<- lda_model$get_top_words(n = 100, lambda = 1)
+  phi <- lda_model$get_top_words(n = 100, lambda = 1)
   readr::write_rds(phi, "phi.Rds")
   d
 }
@@ -252,18 +251,15 @@ word_dims_newtext <- function(lda_model, tokens, n_iter = 200) {
   v <- text2vec::create_vocabulary(it)
   v <- text2vec::prune_vocabulary(
     v,
-    vocab_term_max = n * 500,
     term_count_min = 10, 
-    doc_proportion_max = 0.5,
-    doc_proportion_min = 0.001
+    doc_proportion_max = 0.5)
   )
   dtm <- text2vec::create_dtm(it, text2vec::vocab_vectorizer(v))
   d <- lda_model$fit_transform(dtm, n_iter = n_iter)
   d <- as.data.frame(d, stringsAsFactors = FALSE)
   names(d) <- seq_len(ncol(d))
   row.names(d) <- NULL
-  phi <<- data.frame()
-  phi <<- lda_model$get_top_words(n = 100, lambda = 1)
+  phi <- lda_model$get_top_words(n = 100, lambda = 1)
   readr::write_rds(phi, "phi.Rds")
   d
 }
