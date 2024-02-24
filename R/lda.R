@@ -224,13 +224,15 @@ required_pkgs.step_lda <- function(x, ...) {
   "textrecipes"
 }
 
-word_dims <- function(tokens, n = 10, n_iter = 20) {
+word_dims <- function(tokens, n = 10, n_iter = 200) {
   it <- text2vec::itoken(tokens, ids = seq_along(tokens))
   v <- text2vec::create_vocabulary(it)
   v <- text2vec::prune_vocabulary(
     v,
-    term_count_min = 2,
-    vocab_term_max = n * 50
+    vocab_term_max = n * 500,
+    term_count_min = 10, 
+    doc_proportion_max = 0.5,
+    doc_proportion_min = 0.001
   )
   dtm <- text2vec::create_dtm(it, text2vec::vocab_vectorizer(v))
   lda_model <- text2vec::LDA$new(n_topics = n)
@@ -240,21 +242,27 @@ word_dims <- function(tokens, n = 10, n_iter = 20) {
   row.names(d) <- NULL
   attr(d, "dict") <- lda_model
   phi <- lda_model$get_top_words(n = 100, lambda = 1)
-  readr::write_rds(phi, "teszt.Rds")
+  readr::write_rds(phi, "teszt2.Rds")
   d
 }
 
-word_dims_newtext <- function(lda_model, tokens, n_iter = 20) {
+word_dims_newtext <- function(lda_model, tokens, n_iter = 200) {
   it <- text2vec::itoken(tokens, ids = seq_along(tokens))
   v <- text2vec::create_vocabulary(it)
-  v <- text2vec::prune_vocabulary(v, term_count_min = 5, doc_proportion_max = 0.2)
+  v <- text2vec::prune_vocabulary(
+    v,
+    vocab_term_max = n * 500,
+    term_count_min = 10, 
+    doc_proportion_max = 0.5,
+    doc_proportion_min = 0.001
+  )
   dtm <- text2vec::create_dtm(it, text2vec::vocab_vectorizer(v))
   d <- lda_model$fit_transform(dtm, n_iter = n_iter)
   d <- as.data.frame(d, stringsAsFactors = FALSE)
   names(d) <- seq_len(ncol(d))
   row.names(d) <- NULL
   phi <- lda_model$get_top_words(n = 100, lambda = 1)
-  readr::write_rds(phi, "teszt.Rds")
+  readr::write_rds(phi, "teszt2.Rds")
   d
 }
 
