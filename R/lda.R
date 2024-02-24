@@ -252,7 +252,7 @@ word_dims_newtext <- function(lda_model, tokens, n_iter = 200) {
   v <- text2vec::prune_vocabulary(
     v,
     term_count_min = 10, 
-    doc_proportion_max = 0.5)
+    doc_proportion_max = 0.5
   )
   dtm <- text2vec::create_dtm(it, text2vec::vocab_vectorizer(v))
   d <- lda_model$fit_transform(dtm, n_iter = n_iter)
