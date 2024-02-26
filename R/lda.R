@@ -224,7 +224,7 @@ required_pkgs.step_lda <- function(x, ...) {
   "textrecipes"
 }
 
-word_dims <- function(tokens, n = 10, n_iter = 200) {
+word_dims <- function(tokens, n = 10, n_iter = 100) {
   it <- text2vec::itoken(tokens, ids = seq_along(tokens))
   v <- text2vec::create_vocabulary(it)
   v <- text2vec::prune_vocabulary(
@@ -246,7 +246,7 @@ word_dims <- function(tokens, n = 10, n_iter = 200) {
   d
 }
 
-word_dims_newtext <- function(lda_model, tokens, n_iter = 200) {
+word_dims_newtext <- function(lda_model, tokens, n_iter = 100) {
   it <- text2vec::itoken(tokens, ids = seq_along(tokens))
   v <- text2vec::create_vocabulary(it)
   v <- text2vec::prune_vocabulary(
